@@ -1,0 +1,16 @@
+digraph W {
+  graph [rankdir=TB, nodesep=1.6, ranksep=1.1, dpi=200, bgcolor=white, splines=true];
+  node [fontname="DejaVu Sans", fontsize=10, shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#222222", margin="0.14,0.08"];
+  edge [fontname="DejaVu Sans", fontsize=9, color="#222222", arrowsize=0.7];
+  s0 [label="", shape=circle, width=0.18, style=filled, fillcolor="#222222"];
+  off [label="Вимкнено\n(aria-checked=false)"];
+  on  [label="Увімкнено\n(aria-checked=true)"];
+  cf  [label="Очікує підтвердження\n(діалог відкрито)"];
+  s0 -> off;
+  {rank=same; off; on}
+  off -> on [label="клік / Space\n"];
+  on -> off [label="клік (звичайний\nпристрій)\n", ];
+  on -> cf [label=" клік (критичний\n пристрій)"];
+  cf -> on [label="«Скасувати» / Esc  ", constraint=false];
+  cf -> off [label="  «Вимкнути»"];
+}

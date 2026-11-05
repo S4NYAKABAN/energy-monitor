@@ -1,0 +1,25 @@
+digraph S {
+  graph [rankdir=TB, nodesep=0.45, ranksep=0.5, dpi=200, bgcolor=white];
+  node [fontname="DejaVu Sans", fontsize=10, shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#222222", margin="0.14,0.08"];
+  edge [fontname="DejaVu Sans", fontsize=9, color="#222222", arrowsize=0.7];
+  s0 [label="", shape=circle, width=0.18, style=filled, fillcolor="#222222"];
+  idle [label="Очікування\n(форма порожня\nабо редагується)"];
+  chk  [label="Перевірка\nполів"];
+  fe   [label="Помилки полів\n(aria-invalid)"];
+  sub  [label="Відправлення\n(кнопка неактивна)"];
+  ae   [label="Помилка входу\n(лічильник спроб)"];
+  lk   [label="Блокування\n30 с"];
+  ok   [label="Успішний вхід"];
+  e0 [label="", shape=doublecircle, width=0.18, style=filled, fillcolor="#222222"];
+  s0 -> idle;
+  idle -> chk [label="натискання\n«Увійти»"];
+  chk -> fe [label="дані некоректні"];
+  fe -> idle [label="редагування\nполя"];
+  chk -> sub [label="дані коректні"];
+  sub -> ok [label="облікові дані\nвірні"];
+  sub -> ae [label="невірні,\nспроб < 5"];
+  sub -> lk [label="5-та невдала\nспроба"];
+  ae -> idle [label="нове введення"];
+  lk -> idle [label="минуло 30 с"];
+  ok -> e0 [label="перехід до\n«Огляд»"];
+}

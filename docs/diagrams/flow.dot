@@ -1,0 +1,66 @@
+digraph G {
+  graph [rankdir=TB, nodesep=0.35, ranksep=0.38, dpi=200, bgcolor=white, fontname="DejaVu Sans"];
+  node [fontname="DejaVu Sans", fontsize=10, shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#222222", margin="0.12,0.07"];
+  edge [fontname="DejaVu Sans", fontsize=9, color="#222222", arrowsize=0.7];
+
+  start [label="Початок", shape=oval, fillcolor="#E6E6E6"];
+  open  [label="Відкрити застосунок"];
+  sess  [label="Є активна\nсесія?", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+  login [label="Ввести email\nі пароль"];
+  valid [label="Поля\nкоректні?", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+  err1  [label="Показати помилки\nполів"];
+  cred  [label="Облікові\nдані вірні?", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+  att   [label="Невдалих\nспроб < 5?", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+  err2  [label="Повідомлення\nпро помилку входу"];
+  lock  [label="Блокування\nна 30 с"];
+  dash  [label="Сторінка «Огляд»", fillcolor="#E6E6E6"];
+  menu  [label="Обрати розділ\nу меню", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+
+  an1 [label="Аналітика:\nобрати період"];
+  an2 [label="Переглянути графік\nі таблицю"];
+  an3 [label="Експорт\nCSV?", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+  an4 [label="Завантажити файл"];
+
+  au1 [label="Автономне живлення:\nпереглянути АКБ"];
+  au2 [label="Ввести навантаження,\nотримати час роботи"];
+
+  dv1 [label="Пристрої:\nпошук, фільтр"];
+  dv2 [label="Критичний\nпристрій?", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+  dv3 [label="Підтвердити\nвимкнення"];
+  dv4 [label="Змінити стан\nпристрою"];
+
+  al1 [label="Сповіщення:\nобрати подію"];
+  al2 [label="Підтвердити подію"];
+
+  st1 [label="Налаштування:\nзмінити параметри"];
+  st2 [label="Зберегти\nпараметри"];
+
+  more [label="Продовжити\nроботу?", shape=diamond, style=filled, fillcolor="#F2F2F2"];
+  out  [label="Вийти з системи"];
+  end  [label="Кінець", shape=oval, fillcolor="#E6E6E6"];
+
+  start -> open -> sess;
+  sess -> login [label=" ні"];
+  sess -> dash [label=" так"];
+  login -> valid;
+  valid -> err1 [label=" ні"];
+  err1 -> login;
+  valid -> cred [label=" так"];
+  cred -> dash [label=" так"];
+  cred -> att [label=" ні"];
+  att -> err2 [label=" так"];
+  err2 -> login;
+  att -> lock [label=" ні"];
+  lock -> login;
+  dash -> menu;
+  menu -> an1; menu -> au1; menu -> dv1; menu -> al1; menu -> st1;
+  an1 -> an2 -> an3; an3 -> an4 [label=" так"]; an3 -> more [label=" ні"]; an4 -> more;
+  au1 -> au2 -> more;
+  dv1 -> dv2; dv2 -> dv3 [label=" так"]; dv2 -> dv4 [label=" ні"]; dv3 -> dv4; dv4 -> more;
+  al1 -> al2 -> more;
+  st1 -> st2 -> more;
+  more -> menu [label=" так", constraint=false];
+  more -> out [label=" ні"];
+  out -> end;
+  {rank=same; an1; au1; dv1; al1; st1}
+}
